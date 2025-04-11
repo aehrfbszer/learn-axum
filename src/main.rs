@@ -18,9 +18,9 @@ async fn main() {
         .route("/hello", get(root))
         // `POST /users` goes to `create_user`
         .route("/users", post(create_user).get(root))
-        .nest_service(
-            "/",
-            ServeDir::new("front-end/dist").not_found_service(ServeFile::new("front-end/dist/index.html")),
+        .fallback_service(
+            ServeDir::new("front-end/dist")
+                .not_found_service(ServeFile::new("front-end/dist/index.html")),
         )
         .layer(
             CorsLayer::new()
